@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="AQS实现之ReentrantLock的公平锁模式[TOC] 流程图：  代码详解ReentrantLock构造方法123public ReentrantLock(boolean fair) &amp;#123;    sync = fair ? new FairSync() : new NonfairSync();&amp;#125;  从上面的构造函数可以看出可重入锁ReentrantLock有两种模式。">
+<meta name="description" content="AQS实现之ReentrantLock的公平锁模式之前阅读javadoop的文章，根据自己的理解对ReentrantLock进行解析  流程图：  代码详解ReentrantLock构造方法123public ReentrantLock(boolean fair) &amp;#123;    sync = fair ? new FairSync() : new NonfairSync();&amp;#125;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="XanderXu">
 <meta property="og:url" content="http://yoursite.com/2018/10/15/java-AQS-01/index.html">
 <meta property="og:site_name" content="XanderXu">
-<meta property="og:description" content="AQS实现之ReentrantLock的公平锁模式[TOC] 流程图：  代码详解ReentrantLock构造方法123public ReentrantLock(boolean fair) &amp;#123;    sync = fair ? new FairSync() : new NonfairSync();&amp;#125;  从上面的构造函数可以看出可重入锁ReentrantLock有两种模式。">
+<meta property="og:description" content="AQS实现之ReentrantLock的公平锁模式之前阅读javadoop的文章，根据自己的理解对ReentrantLock进行解析  流程图：  代码详解ReentrantLock构造方法123public ReentrantLock(boolean fair) &amp;#123;    sync = fair ? new FairSync() : new NonfairSync();&amp;#125;">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://pgfhhwpjv.bkt.clouddn.com/static/images//java-AQS-01/AQS_01.jpg">
-<meta property="og:updated_time" content="2018-10-15T07:01:11.035Z">
+<meta property="og:updated_time" content="2018-10-15T07:13:09.262Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="XanderXu">
-<meta name="twitter:description" content="AQS实现之ReentrantLock的公平锁模式[TOC] 流程图：  代码详解ReentrantLock构造方法123public ReentrantLock(boolean fair) &amp;#123;    sync = fair ? new FairSync() : new NonfairSync();&amp;#125;  从上面的构造函数可以看出可重入锁ReentrantLock有两种模式。">
+<meta name="twitter:description" content="AQS实现之ReentrantLock的公平锁模式之前阅读javadoop的文章，根据自己的理解对ReentrantLock进行解析  流程图：  代码详解ReentrantLock构造方法123public ReentrantLock(boolean fair) &amp;#123;    sync = fair ? new FairSync() : new NonfairSync();&amp;#125;">
 <meta name="twitter:image" content="http://pgfhhwpjv.bkt.clouddn.com/static/images//java-AQS-01/AQS_01.jpg">
 
 
@@ -293,7 +293,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-15T15:01:11+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-15T15:13:09+08:00">
                 2018-10-15
               </time>
             
@@ -346,7 +346,8 @@
       
 
       
-        <h2 id="AQS实现之ReentrantLock的公平锁模式"><a href="#AQS实现之ReentrantLock的公平锁模式" class="headerlink" title="AQS实现之ReentrantLock的公平锁模式"></a>AQS实现之ReentrantLock的公平锁模式</h2><p>[TOC]</p>
+        <h2 id="AQS实现之ReentrantLock的公平锁模式"><a href="#AQS实现之ReentrantLock的公平锁模式" class="headerlink" title="AQS实现之ReentrantLock的公平锁模式"></a>AQS实现之ReentrantLock的公平锁模式</h2><blockquote class="blockquote-center"><p>之前阅读javadoop的文章，根据自己的理解对ReentrantLock进行解析</p>
+</blockquote>
 <h4 id="流程图："><a href="#流程图：" class="headerlink" title="流程图："></a>流程图：</h4><img src="http://pgfhhwpjv.bkt.clouddn.com/static/images//java-AQS-01/AQS_01.jpg">
 <hr>
 <h4 id="代码详解"><a href="#代码详解" class="headerlink" title="代码详解"></a>代码详解</h4><h5 id="ReentrantLock构造方法"><a href="#ReentrantLock构造方法" class="headerlink" title="ReentrantLock构造方法"></a>ReentrantLock构造方法</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ReentrantLock</span><span class="params">(<span class="keyword">boolean</span> fair)</span> </span>&#123;</span><br><span class="line">    sync = fair ? <span class="keyword">new</span> FairSync() : <span class="keyword">new</span> NonfairSync();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
