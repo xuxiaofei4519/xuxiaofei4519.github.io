@@ -87,13 +87,13 @@
 <meta property="og:site_name" content="XanderXu">
 <meta property="og:description" content="本篇文章主要浅析IdentityHashmap的使用、适用场景和内部实现原理。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://pgfhhwpjv.bkt.clouddn.com/static/images//java-IdentityHashmap/java-IdentityHashmap01.png">
-<meta property="og:image" content="http://pgfhhwpjv.bkt.clouddn.com/static/images//java-IdentityHashmap/java-IdentityHashmap02.png">
+<meta property="og:image" content="http://qiniuyun.xanderxu.cn/static/images//java-IdentityHashmap/java-IdentityHashmap01.png">
+<meta property="og:image" content="http://qiniuyun.xanderxu.cn/static/images//java-IdentityHashmap/java-IdentityHashmap02.png">
 <meta property="og:updated_time" content="2018-10-11T11:25:07.193Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IdentityHashmap解析">
 <meta name="twitter:description" content="本篇文章主要浅析IdentityHashmap的使用、适用场景和内部实现原理。">
-<meta name="twitter:image" content="http://pgfhhwpjv.bkt.clouddn.com/static/images//java-IdentityHashmap/java-IdentityHashmap01.png">
+<meta name="twitter:image" content="http://qiniuyun.xanderxu.cn/static/images//java-IdentityHashmap/java-IdentityHashmap01.png">
 
 
 
@@ -373,8 +373,8 @@
         <blockquote class="blockquote-center"><p>本篇文章主要浅析IdentityHashmap的使用、适用场景和内部实现原理。</p>
 </blockquote>
 <a id="more"></a>
-<h3 id="IdentityHashMap-继承类与实现接口"><a href="#IdentityHashMap-继承类与实现接口" class="headerlink" title="IdentityHashMap 继承类与实现接口"></a><strong>IdentityHashMap 继承类与实现接口</strong></h3><img src="http://pgfhhwpjv.bkt.clouddn.com/static/images//java-IdentityHashmap/java-IdentityHashmap01.png">
-<h3 id="IdentityHashMap-内部的方法"><a href="#IdentityHashMap-内部的方法" class="headerlink" title="IdentityHashMap 内部的方法"></a><strong>IdentityHashMap 内部的方法</strong></h3><img src="http://pgfhhwpjv.bkt.clouddn.com/static/images//java-IdentityHashmap/java-IdentityHashmap02.png">
+<h3 id="IdentityHashMap-继承类与实现接口"><a href="#IdentityHashMap-继承类与实现接口" class="headerlink" title="IdentityHashMap 继承类与实现接口"></a><strong>IdentityHashMap 继承类与实现接口</strong></h3><img src="http://qiniuyun.xanderxu.cn/static/images//java-IdentityHashmap/java-IdentityHashmap01.png">
+<h3 id="IdentityHashMap-内部的方法"><a href="#IdentityHashMap-内部的方法" class="headerlink" title="IdentityHashMap 内部的方法"></a><strong>IdentityHashMap 内部的方法</strong></h3><img src="http://qiniuyun.xanderxu.cn/static/images//java-IdentityHashmap/java-IdentityHashmap02.png">
 <h3 id="IdentityHashMap示例"><a href="#IdentityHashMap示例" class="headerlink" title="IdentityHashMap示例"></a><strong>IdentityHashMap示例</strong></h3><ul>
 <li><p>示例</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testIdentityHashMap</span><span class="params">()</span></span>&#123;</span><br><span class="line">   String xanderXu = <span class="keyword">new</span> String(<span class="string">"XanderXu"</span>);</span><br><span class="line">   </span><br><span class="line">   Map&lt;String, Object&gt; identityHashMap = <span class="keyword">new</span> IdentityHashMap&lt;&gt;();</span><br><span class="line">   identityHashMap.put(<span class="keyword">new</span> String(<span class="string">"XanderXu"</span>),<span class="string">"666"</span>);</span><br><span class="line">   identityHashMap.put(<span class="keyword">new</span> String(<span class="string">"XanderXu"</span>),<span class="string">"777"</span>);</span><br><span class="line">   identityHashMap.put(xanderXu, <span class="string">"xiaofei"</span>);</span><br><span class="line">   identityHashMap.put(xanderXu, <span class="string">"xiaofei--2"</span>);</span><br><span class="line"></span><br><span class="line">   System.out.println(identityHashMap);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
