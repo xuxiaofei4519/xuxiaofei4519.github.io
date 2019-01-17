@@ -91,7 +91,7 @@
 <meta property="og:image" content="http://qiniuyun.xanderxu.cn/static/images//mysql-03-longTransaction/mysql03-02.png">
 <meta property="og:image" content="http://qiniuyun.xanderxu.cn/static/images//mysql-03-longTransaction/mysql03-03.png">
 <meta property="og:image" content="http://qiniuyun.xanderxu.cn/static/images//mysql-03-longTransaction/mysql03-04.png">
-<meta property="og:updated_time" content="2019-01-17T02:46:35.896Z">
+<meta property="og:updated_time" content="2019-01-17T02:48:18.613Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="丁奇mysql03：长事务查询">
 <meta name="twitter:description" content="最近在学习丁奇系列的干货，收获颇多，因此自己手动实践，并总结一些工作中会经常用到的知识">
@@ -381,11 +381,11 @@
 <li>开始事务<img src="http://qiniuyun.xanderxu.cn/static/images//mysql-03-longTransaction/mysql03-02.png"></li>
 <li>执行sql<img src="http://qiniuyun.xanderxu.cn/static/images//mysql-03-longTransaction/mysql03-03.png"></li>
 <li>执行查询命令<img src="http://qiniuyun.xanderxu.cn/static/images//mysql-03-longTransaction/mysql03-04.png">
+</li>
+</ol>
 <blockquote>
 <p>经过以上步骤可以看到我们能够查询出长事务的线程id。同时我在执行时发现，步骤2并没有真正开启事务，因此如果执行完步骤2，去查询长事务是查询不到的，只有真正执行sql语句的时候，事务才会真正开启，这个时候才可以查询出长事务，这也和丁奇文章中所说的对应。<br>然后还要注意的是1步骤其实可以去掉，自动提交的意思是在没有begin或start transaction的时候，因此就算autocommit=1.我们使用命令start transaction还是可以开始事务的，事务内的语句也不会自动提交。</p>
 </blockquote>
-</li>
-</ol>
 
       
     </div>
