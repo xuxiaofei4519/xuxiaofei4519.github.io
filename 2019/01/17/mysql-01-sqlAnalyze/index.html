@@ -100,7 +100,7 @@
 <meta property="og:image" content="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-11.png">
 <meta property="og:image" content="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-12.png">
 <meta property="og:image" content="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-13.png">
-<meta property="og:updated_time" content="2019-01-17T09:31:26.653Z">
+<meta property="og:updated_time" content="2019-01-17T09:35:04.805Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="丁奇mysql01：sql相关">
 <meta name="twitter:description" content="最近在学习丁奇系列的干货，收获颇多，因此自己手动实践，并总结一些工作中会经常用到的知识，这一篇总结数据库连接、sql分析相关内容。">
@@ -391,15 +391,18 @@
 <img src="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-02.png">
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> profiling=<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
 <img src="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-03.png">
-<p>执行查询语句<br><img src="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-04.png"></p>
-<p>查看执行时间<br><img src="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-05.png"></p>
+<p>执行查询语句</p>
+<img src="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-04.png">
+<p>查看执行时间</p>
+<img src="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-05.png">
 <p>查看 SQL 执行耗时详细信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show profile for query [id]</span><br></pre></td></tr></table></figure></p>
 <img src="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-06.png">
 <p>以上具体的信息都是从 INFORMATION_SCHEMA.PROFILING 这张表中取得的。这张表记录了所有的各个步骤的执行时间及相关信息。可以查询指定queryid的sql执行，从开始、分析器、优化器、执行器到最终结束的详细信息<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> INFORMATION_SCHEMA.PROFILING <span class="keyword">where</span> query_id = Query_ID;</span><br></pre></td></tr></table></figure></p>
 <img src="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-07.png">
 <h4 id="重新初始化连接资源"><a href="#重新初始化连接资源" class="headerlink" title="重新初始化连接资源"></a>重新初始化连接资源</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql_reset_connection</span><br></pre></td></tr></table></figure>
 <p>这并非是sql命令，其实是mysql的API接口，通过编程可以调用。</p>
-<h4 id="查询缓存"><a href="#查询缓存" class="headerlink" title="查询缓存"></a>查询缓存</h4><p>查询缓存配置<br>mac机器需要在/etc/目录下新建my.cnf文件<br>文件内容如下<br><img src="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-08.png"></p>
+<h4 id="查询缓存"><a href="#查询缓存" class="headerlink" title="查询缓存"></a>查询缓存</h4><p>查询缓存配置<br>mac机器需要在/etc/目录下新建my.cnf文件<br>文件内容如下:</p>
+<img src="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-08.png">
 <p>query_cache_type=0时表示关闭，1时表示打开，2表示只要select中明确指定SQL_CACHE才缓存。</p>
 <p>我们可以通过以下命令查看当前查询缓存的设置<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">variables</span> <span class="keyword">like</span> ‘%query_cache%<span class="string">';</span></span><br></pre></td></tr></table></figure></p>
 <img src="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-09.png">
@@ -423,8 +426,13 @@
 <li>当查询所基于的低层表有改动时与这个表有关的查询缓存都会作废、如果对于并发度比较大的系统这个开销是可观的；对于作废结果集这个操作也是要用并发访问控制的，就是说也会有锁。并发大的时候就会有Waiting for query cache lock 产生。</li>
 <li>至于用不用还是要看业务需求。</li>
 </ol>
-<h4 id="慢日志"><a href="#慢日志" class="headerlink" title="慢日志"></a>慢日志</h4><p>1.开启慢查询日志<br><img src="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-11.png"></p>
-<p>2.设置超时时间<br>默认是10秒，我们可以通过命令设置：<br><img src="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-12.png"><br>然后新开一个会话查看：<br><img src="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-13.png"><br>3.log_output<br>参数是指定日志的存储方式。log_output=‘FILE’表示将日志存入文件，默认值是’FILE’。log_output=’TABLE’表示将日志存入数据库，这样日志信息就会被写入到mysql.slow_log表中。MySQL数据库支持同时两种日志存储方式，配置的时候以逗号隔开即可，如：log_output=‘FILE,TABLE’。日志记录到系统的专用日志表中，要比记录到文件耗费更多的系统资源，因此对于需要启用慢查询日志，又需要能够获得更高的系统性能，那么建议优先记录到文件。<br>4.log-queries-not-using-indexes<br>未使用索引的查询也被记录到慢查询日志中（可选项）。如果调优的话，建议开启这个选项。另外，开启了这个参数，其实使用full index scan的sql也会被记录到慢查询日志。<br>5.log_slow_admin_statements<br>表示是否将慢管理语句例如ANALYZE TABLE和ALTER TABLE等记入慢查询日志</p>
+<h4 id="慢日志"><a href="#慢日志" class="headerlink" title="慢日志"></a>慢日志</h4><p>1.开启慢查询日志</p>
+<img src="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-11.png">
+<p>2.设置超时时间,默认是10秒，我们可以通过命令设置：</p>
+<img src="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-12.png">
+<p>然后新开一个会话查看：</p>
+<img src="http://qiniuyun.xanderxu.cn/static/images//mysql-01-sqlAnalyze/mysql01-13.png">
+<p>3.log_output<br>参数是指定日志的存储方式。log_output=‘FILE’表示将日志存入文件，默认值是’FILE’。log_output=’TABLE’表示将日志存入数据库，这样日志信息就会被写入到mysql.slow_log表中。MySQL数据库支持同时两种日志存储方式，配置的时候以逗号隔开即可，如：log_output=‘FILE,TABLE’。日志记录到系统的专用日志表中，要比记录到文件耗费更多的系统资源，因此对于需要启用慢查询日志，又需要能够获得更高的系统性能，那么建议优先记录到文件。<br>4.log-queries-not-using-indexes<br>未使用索引的查询也被记录到慢查询日志中（可选项）。如果调优的话，建议开启这个选项。另外，开启了这个参数，其实使用full index scan的sql也会被记录到慢查询日志。<br>5.log_slow_admin_statements<br>表示是否将慢管理语句例如ANALYZE TABLE和ALTER TABLE等记入慢查询日志</p>
 <h4 id="慢日志分析工具"><a href="#慢日志分析工具" class="headerlink" title="慢日志分析工具"></a>慢日志分析工具</h4><p>MySQL 提供了慢日志分析工具 mysqldumpslow。</p>
 <p>-s 表示按照何种方式排序；<br>c: 访问计数<br>l: 锁定时间<br>r: 返回记录<br>t: 查询时间<br>al:平均锁定时间<br>ar:平均返回记录数<br>at:平均查询时间<br>-t 是top n的意思，即为返回前面多少条的数据；<br>-g 后边可以写一个正则匹配模式，大小写不敏感的；</p>
 <p>命令示例：<br>得到返回记录集最多的 10 个 SQL：mysqldumpslow -s r -t 10 /database/mysql/mysql06_slow.log<br>得到访问次数最多的 10 个 SQL：mysqldumpslow -s c -t 10 /database/mysql/mysql06_slow.log<br>得到按照时间排序的前10条里面含有左连接的查询语句：mysqldumpslow -s t -t 10 -g “left join” /database/mysql/mysql06_slow.log<br>另外建议在使用这些命令时结合 | 和 more 使用 ，否则有可能出现刷屏的情况：mysqldumpslow -s r -t 20 /mysqldata/mysql/mysql06-slow.log | more</p>
