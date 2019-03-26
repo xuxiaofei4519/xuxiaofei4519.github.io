@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://qiniuyun.xanderxu.cn/static/images//java-OnlineSolution-01/java-OnlineSolution03.jpg">
 <meta property="og:image" content="http://qiniuyun.xanderxu.cn/static/images//java-OnlineSolution-01/java-OnlineSolution04.jpg">
 <meta property="og:image" content="http://qiniuyun.xanderxu.cn/static/images//java-OnlineSolution-01/java-OnlineSolution05.jpg">
-<meta property="og:updated_time" content="2019-01-14T12:53:35.160Z">
+<meta property="og:updated_time" content="2019-03-26T13:24:08.011Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记一次线上问题解决">
 <meta name="twitter:description" content="4号早晨，邮箱大量探活失败报警和cpu占用过高报警，因此将此次线上问题解决记录下来。">
@@ -396,6 +396,9 @@
 <p>上面代码中如果执行到continue，上面MDCUtil.strikeFullLink()就不会被关闭，久而久之堆中内存就会占用过高，导致频繁GC，进而导致cpu飙升</p>
 </li>
 </ol>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><blockquote>
+<p>此次事故虽然是同事写的代码有问题，但是也是我们共同负责的系统，通过此次事故，也给我敲响警钟，代码要严谨、严谨再严谨。同时也是一次重要的技术成长经历。最后虽然java有垃圾回收机制，但是我们也要时刻谨记资源释放问题。</p>
+</blockquote>
 
       
     </div>
@@ -424,7 +427,7 @@
   <p><span>本文标题:</span><a href="/2019/01/14/java-OnlineSolution-01/">记一次线上问题解决</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 XanderXu 的个人博客">XanderXu</a></p>
   <p><span>发布时间:</span>2019年01月14日 - 20:01</p>
-  <p><span>最后更新:</span>2019年01月14日 - 20:01</p>
+  <p><span>最后更新:</span>2019年03月26日 - 21:03</p>
   <p><span>原始链接:</span><a href="/2019/01/14/java-OnlineSolution-01/" title="记一次线上问题解决">http://yoursite.com/2019/01/14/java-OnlineSolution-01/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2019/01/14/java-OnlineSolution-01/"  aria-label="复制成功！"></i></span>
   </p>
@@ -662,7 +665,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#问题解决过程"><span class="nav-number">2.</span> <span class="nav-text">问题解决过程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#问题解决过程"><span class="nav-number">2.</span> <span class="nav-text">问题解决过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
