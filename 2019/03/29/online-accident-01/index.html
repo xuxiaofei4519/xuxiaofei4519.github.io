@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://qiniuyun.xanderxu.cn/static/images//online-accident-01/online-accident-01-1.png">
 <meta property="og:image" content="http://qiniuyun.xanderxu.cn/static/images//online-accident-01/online-accident-01-2.png">
 <meta property="og:image" content="http://qiniuyun.xanderxu.cn/static/images//online-accident-01/online-accident-01-3.png">
-<meta property="og:updated_time" content="2019-03-29T09:19:09.373Z">
+<meta property="og:updated_time" content="2019-04-02T07:05:13.271Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记线上事故：dubbo Filter调用异常">
 <meta name="twitter:description" content="今天遇到的线上事故，因此记录下来，防止自己也会犯类似错误">
@@ -380,6 +380,10 @@
 <p>初步确认是由于下游API包重复字段导致Gson工具Object转Json时出现异常，但是和下游RD确认，接口API未改动，且都是老业务接口，未做改动，为避免阻塞上线，下游RD去掉重复字段，重新修改版本，灰度回滚，升级版本号，重新上线，灰度回归验证通过。最终成功上线。</p>
 <p>2019-03-29中午，线上购买理财业务出现异常，查询日志如下:<br><img src="http://qiniuyun.xanderxu.cn/static/images//online-accident-01/online-accident-01-1.png"></p>
 <p>还是同样错误，并且此业务和昨天上线需求没有任何关系，观察日志，发现dubbo调用时进入了cornerstone项目的filter，查看cornerstone项目下该包的Filter，发现都是@Activate，且cornerstone/cornerstone-rpc/cornerstone-rpc-filter/src/main/resources/META-INF/dubbo/internal/com.alibaba.dubbo.rpc.Filter中也有指定，此时我非常困惑于为什么会走这么多的filter，因为cornerstone是整个支付的基础项目，有可能是其他业务必须的。询问下游RD，下游也不清楚这些filter是干什么用的。回想这个异常是出自老业务，昨天上线的需求和该业务没有一点关系。因此最终确定，就是包引用问题。查看上线前下游API版本中的pom和上线后下游API版本中的pom，发现多出如下内容:<br><img src="http://qiniuyun.xanderxu.cn/static/images//online-accident-01/online-accident-01-2.png"><br>该包正好是日志中堆栈信息所在的包，最终和下游确认，该包不能对外暴露。但是由于下游API包需要该依赖，因此添加:<br><img src="http://qiniuyun.xanderxu.cn/static/images//online-accident-01/online-accident-01-3.png"><br>这样防止上游依赖，最终修改后，版本升级，bug上线。</p>
+<h4 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h4><ol>
+<li>删除重复字段</li>
+<li>如果我们再子类当中必须要添加和父类一样的字段的话，可以添加transient关键字修饰，这样该字段就不会参与json序列化。</li>
+</ol>
 <h4 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h4><ol>
 <li>分析问题时要果断，要带着问题去一步一步思考是什么，为什么。</li>
 <li>下游的此次修改也给我一个警示，对外不能随便暴露API包，尤其网关类系统在使用的时候，要格外注意依赖对自身系统的侵入性，否则一不小心就会出现服务大面积崩溃。</li>
@@ -413,7 +417,7 @@
   <p><span>本文标题:</span><a href="/2019/03/29/online-accident-01/">记线上事故：dubbo Filter调用异常</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 XanderXu 的个人博客">XanderXu</a></p>
   <p><span>发布时间:</span>2019年03月29日 - 17:03</p>
-  <p><span>最后更新:</span>2019年03月29日 - 17:03</p>
+  <p><span>最后更新:</span>2019年04月02日 - 15:04</p>
   <p><span>原始链接:</span><a href="/2019/03/29/online-accident-01/" title="记线上事故：dubbo Filter调用异常">http://yoursite.com/2019/03/29/online-accident-01/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://yoursite.com/2019/03/29/online-accident-01/"  aria-label="复制成功！"></i></span>
   </p>
@@ -651,7 +655,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#反思"><span class="nav-number">2.</span> <span class="nav-text">反思</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决方式"><span class="nav-number">2.</span> <span class="nav-text">解决方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#反思"><span class="nav-number">3.</span> <span class="nav-text">反思</span></a></li></ol></div>
             
 
           </div>
